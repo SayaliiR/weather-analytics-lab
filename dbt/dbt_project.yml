@@ -1,0 +1,26 @@
+name: weather_analytics
+version: "1.0.0"
+config-version: 2
+
+profile: weather_analytics
+
+model-paths: ["models"]
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+analysis-paths: ["analyses"]
+
+vars:
+  degree_day_base_c: 18          # base temperature (°C) for heating/cooling degree days
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  weather_analytics:
+    staging:
+      +materialized: ephemeral   # compiled as CTEs, never created in Snowflake
+    analytics:
+      +materialized: table       # BIGSTUDY_DB.ANALYTICS.<model>

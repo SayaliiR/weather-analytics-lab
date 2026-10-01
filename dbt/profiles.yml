@@ -1,0 +1,17 @@
+# Credentials come from environment variables, so this file contains no secrets.
+# Locally: `source dbt.env` (git-ignored). In Airflow: set by the dbt DAG from the
+# snowflake_conn Airflow connection.
+weather_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('DBT_ACCOUNT') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      role: "{{ env_var('DBT_ROLE') }}"
+      warehouse: "{{ env_var('DBT_WAREHOUSE') }}"
+      database: "{{ env_var('DBT_DATABASE') }}"
+      schema: analytics
+      private_key_path: "{{ env_var('DBT_PRIVATE_KEY_PATH') }}"
+      private_key_passphrase: "{{ env_var('DBT_PRIVATE_KEY_PASSPHRASE') }}"
+      threads: 1

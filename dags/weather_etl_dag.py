@@ -94,7 +94,7 @@ with DAG(
         records = [row for city_rows in rows_per_city for row in city_rows]
         cur = get_snowflake_cursor()
         try:
-            # DDL auto-commits in Snowflake, so create the table before BEGIN.
+            cur.execute("BEGIN")
             cur.execute(f"""
                 CREATE TABLE IF NOT EXISTS {TARGET_TABLE} (
                     city VARCHAR(50) NOT NULL,
@@ -111,7 +111,6 @@ with DAG(
                     PRIMARY KEY (city, date)
                 )
             """)
-            cur.execute("BEGIN")
             cur.execute(f"DELETE FROM {TARGET_TABLE}")
             cur.executemany(
                 f"""INSERT INTO {TARGET_TABLE}

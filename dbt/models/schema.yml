@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: weather_metrics
+    description: "Daily weather per city with rolling averages, temperature anomaly, rolling rainfall and dry spell length"
+    columns:
+      - name: weather_id
+        description: "Surrogate key: city + date"
+        data_tests:
+          - unique
+          - not_null
+      - name: city
+        description: "City name"
+        data_tests:
+          - not_null
+      - name: date
+        description: "Calendar date (city's local time)"
+        data_tests:
+          - not_null
+      - name: is_forecast
+        description: "True for forecast days, False for observed days"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+      - name: temp_mean_7d_avg
+        description: "7-day moving average of daily mean temperature (°C)"
+      - name: temp_mean_30d_avg
+        description: "30-day moving average of daily mean temperature (°C)"
+      - name: temp_anomaly
+        description: "Daily mean temperature minus the city's average over observed days (°C)"
+      - name: rainfall_7d_total
+        description: "Rolling 7-day total precipitation (mm)"
+      - name: dry_spell_length
+        description: "Consecutive dry days (< 1 mm) up to and including this date; 0 on wet days"
+        data_tests:
+          - not_null
+      - name: weather_condition
+        description: "Readable weather condition derived from the WMO weather code"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['Clear', 'Partly Cloudy', 'Overcast', 'Fog', 'Drizzle', 'Rain', 'Snow', 'Thunderstorm', 'Unknown']
+      - name: heating_degree_days
+        description: "Degrees (°C) the daily mean is below the base temperature (heating demand); 0 when warmer"
+      - name: cooling_degree_days
+        description: "Degrees (°C) the daily mean is above the base temperature (cooling demand); 0 when cooler"

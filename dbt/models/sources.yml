@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw
+    database: BIGSTUDY_DB
+    schema: raw
+    description: "Raw data loaded by the Airflow ETL DAG (weather_etl)"
+    tables:
+      - name: weather_daily
+        description: "Daily weather per city from the Open-Meteo API: 60 days of history plus a 7-day forecast"
+        columns:
+          - name: city
+            data_tests:
+              - not_null
+          - name: date
+            data_tests:
+              - not_null
